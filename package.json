@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack"
     },
     "author": "tienhg2001",
     "license": "ISC",
@@ -12,6 +13,8 @@
         "lodash": "^4.17.21"
     },
     "devDependencies": {
-        "prettier": "^3.0.3"
+        "prettier": "^3.0.3",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4"
     }
 }
