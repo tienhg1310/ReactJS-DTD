@@ -27,13 +27,12 @@ class Http {
                     error.response.status === 401 &&
                     error.response.data.name === "EXPIRED_ACCESS_TOKEN"
                 ) {
-                    // set this.refreshTokenRequest để tránh trường hợp: nếu như 1 action thực hiện 2 lần fetch api sẽ dẫn tới call refreshToken 2 lần => nên khi refreshTokenRequest đã tồn tại thì ta gán lại bằng giá trị đó còn k thì mới gán bằng refreshToken()
+                    // set this.refreshTokenRequest để tránh trường hợp: nếu như 1 action thực hiện 2 lần fetch api sẽ dẫn tới call refreshToken 2 lần => nên khi refreshTokenRequest đã tồn tại thì ta gán lại bằng giá trị đó còn k thì mới gọi hàm refreshToken() sau khi xong tất cả sẽ set lại refreshTokenRequest khi finally
                     this.refreshTokenRequest = this.refreshTokenRequest
                         ? this.refreshTokenRequest
                         : refreshToken().finally(() => {
                               this.refreshTokenRequest = null
                           })
-                    // trả về giá trị của hàm refreshTokenRequest gán lại instance bằng config đã refactor
                     return this.refreshTokenRequest
                         .then((access_token) => {
                             error.response.config["Authorization"] =
