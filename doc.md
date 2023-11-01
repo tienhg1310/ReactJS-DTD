@@ -4,18 +4,18 @@ Authentication là việc xác thực danh tính người dùng. Ví dụ: bạn
 
 Bản chất của authentication vẫn là
 
-- Tạo ra một dấu hiệu gì để server biết bạn
-- Lưu trữ dấu hiệu này ở đâu
-- Thực hành kiểm tra dấu hiệu này như thế nào
+-   Tạo ra một dấu hiệu gì để server biết bạn
+-   Lưu trữ dấu hiệu này ở đâu
+-   Thực hành kiểm tra dấu hiệu này như thế nào
 
 Thế giới bây giờ có khá nhiều kiểu xác thực authentication khác nhau:
 
-- Basic authentication
-- Session based authentication
-- Token based authentication
-- Oauth 1.0
-- Oauth 2.0
-- API key
+-   Basic authentication
+-   Session based authentication
+-   Token based authentication
+-   Oauth 1.0
+-   Oauth 2.0
+-   API key
 
 Sau này đi làm, phổ biến nhất là các bạn sẽ làm việc với Token based authentication
 
@@ -40,10 +40,10 @@ Nói một cách khác JWT là một cách để tạo ra token và kiểm tra t
 
 Một số đặc điểm của JWT
 
-- Một chuỗi JWT có 3 phần tách nhau bằng dấu chấm: `header.payload.signature`
-- **header** chứa thông tin thuật toán mã hóa. Nó được tạo ra bằng thuật toán và dễ dàng giải mã
-- **payload** chứa thông tin người dùng và thời gian hết hạn token. Nó cũng được tạo ra bằng thuật toán và dễ dàng giải mã.
-- **signature** là chữ ký, phần quan trọng nhất. Cái này không thể giải mã, vì nó là mã hóa 1 chiều. Chỉ có thể kiểm tra nó có đúng hay không bằng cách mã hóa **header**, **payload** kết hợp với một private key (private key thì thường server sẽ lưu trữ). Vậy nên nếu **header** hoặc **payload** thay đổi thì **signature** sẽ thay đổi.
+-   Một chuỗi JWT có 3 phần tách nhau bằng dấu chấm: `header.payload.signature`
+-   **header** chứa thông tin thuật toán mã hóa. Nó được tạo ra bằng thuật toán và dễ dàng giải mã
+-   **payload** chứa thông tin người dùng và thời gian hết hạn token. Nó cũng được tạo ra bằng thuật toán và dễ dàng giải mã.
+-   **signature** là chữ ký, phần quan trọng nhất. Cái này không thể giải mã, vì nó là mã hóa 1 chiều. Chỉ có thể kiểm tra nó có đúng hay không bằng cách mã hóa **header**, **payload** kết hợp với một private key (private key thì thường server sẽ lưu trữ). Vậy nên nếu **header** hoặc **payload** thay đổi thì **signature** sẽ thay đổi.
 
 Vậy nên nếu bạn là người code server thì đừng bao giờ lưu thông tin nhạy cảm ở payload JWT
 
@@ -51,8 +51,8 @@ JWT có thể dùng ở hầu hết các ngôn ngữ phổ biến hiện nay, v�
 
 ### access token và refresh token
 
-- Access token là token dùng cho authentication. Token này có thời gian hết hạn khá ngắn (30p hoặc 1h)
-- Refresh token là token dùng cho việc tạo một access token khi access token hết hạn. Khi access token hết hạn, bạn gửi refresh token lên server để server kiểm tra và trả về cho bạn một access token mới, từ đó bạn có thể tiếp tục phiên làm việc của bạn. Refresh token có thời gian lưu trữ rất lâu, vài chục ngày hoặc vài năm.
+-   Access token là token dùng cho authentication. Token này có thời gian hết hạn khá ngắn (30p hoặc 1h)
+-   Refresh token là token dùng cho việc tạo một access token khi access token hết hạn. Khi access token hết hạn, bạn gửi refresh token lên server để server kiểm tra và trả về cho bạn một access token mới, từ đó bạn có thể tiếp tục phiên làm việc của bạn. Refresh token có thời gian lưu trữ rất lâu, vài chục ngày hoặc vài năm.
 
 ### Một số điều thú vị quanh Token based authentication
 
