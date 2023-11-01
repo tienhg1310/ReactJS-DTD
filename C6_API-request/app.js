@@ -26,6 +26,7 @@ http.interceptors.request.use(
         return Promise.reject(error)
     }
 )
+
 http.interceptors.response.use(
     (config) => {
         console.log(config)
