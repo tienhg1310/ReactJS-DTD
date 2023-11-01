@@ -1,69 +1,79 @@
-# Kỹ thuật authentication
+# Tổng quan về React
 
-Authentication là việc xác thực danh tính người dùng. Ví dụ: bạn vào page abc.com/admin để quản trị trang web của bạn thì bạn cần nói cho server biết là ai.
+## 1. React là gì? Tại sao lại chọn React?
 
-Bản chất của authentication vẫn là
+ReactJs là một framework Javascript dùng để xây dựng các Single Page Application (SPA)
 
-- Tạo ra một dấu hiệu gì để server biết bạn
-- Lưu trữ dấu hiệu này ở đâu
-- Thực hành kiểm tra dấu hiệu này như thế nào
+SPA là những trang web mà không bị reload khi chúng ta chuyển trang. Ví dụ: Facebook, Twitter, Instagram, Youtube, Gmail,...
 
-Thế giới bây giờ có khá nhiều kiểu xác thực authentication khác nhau:
+Ngoài React thì còn có rất nhiều JS Framework có thể tạo được SPA như Angular, Vue, Svetle,...
 
-- Basic authentication
-- Session based authentication
-- Token based authentication
-- Oauth 1.0
-- Oauth 2.0
-- API key
+### Tại sao lại chọn React?
 
-Sau này đi làm, phổ biến nhất là các bạn sẽ làm việc với Token based authentication
+Chúng ta sẽ so sánh React với 2 framework lớn hiện tại là Angular và Vue
 
-## Token based authentication
+#### Độ khó
 
-Token based authentication là cơ chế xác minh danh tính thông qua việc tạo token. Server sẽ tạo ra một chuỗi ký tự được gọi là token để định danh người dùng, Client sẽ lưu token này ở bộ nhớ, mỗi lần gọi request sẽ gửi token này lên để server xác nhận. Server có thể lưu hoặc không lưu token này tùy usercase.
+- React và Vue theo mình sẽ dễ tiếp cận hơn cho những bạn mới bắt đầu học về các framework SPA
+- Angular là framework khá khó nếu mới bắt đầu vì bạn phải học Typescript cùng những concept khá phức tạp như RXJS, Depedency Injection,...
 
-### Luồng hoạt động
+#### Sự phổ biến
 
-1. Thực hiện login ở client (web, app), username và password sẽ được gửi lên server
-2. Server sẽ kiểm tra trong database, nếu có tồn tại username và password thì sẽ tạo ra một token gửi về cho client
-3. Client sẽ lưu trữ token trong local storage hoặc cookie,...
-4. Client sẽ quản lý việc đã đăng nhập hay chưa bằng việc có token trong bộ nhớ thiết bị hay chưa. Nếu không có nghĩa là chưa đăng nhập (hoặc logout)
-5. Client muốn truy cập đến những tài nguyên cần xác thực danh tính thì Client sẽ gửi token lên server thông qua HTTP Header Authorization
-6. Server nhận được token sẽ tiến hành kiểm tra và giải mã, nếu đúng thì sẽ trả về data, không thì trả về lỗi.
+- React là framework SPA phổ biến nhất hiện nay, số lượt tải hàng tháng gấp 3 lần Vue và Angular cộng lại.
+- Hệ sinh thái xung quanh React cũng rất lớn, được rất nhiều các công ty trên thế giới tin dùng.
+- Nhu cầu việc làm của React cũng lớn hơn rất nhiều so với Vue và Angular
 
-### JWT
+#### Tốc độ
 
-JWT hay JSON Web Token là một tiêu chuẩn mở [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519) để đảm bảo an toàn thông tin.
+Về tốc độ của React, Angular, Vue nhìn chung thì cũng tương đương nhau, chúng ta không cần quá quan tâm về điều này.
 
-Nói một cách khác JWT là một cách để tạo ra token và kiểm tra token có đúng hay không.
+Kích thước file Build của React, Angular, Vue cũng phụ thuộc khá nhiều vào những thứ chúng ta implement vào như thư viện sử dụng nên cũng khó mà đánh giá.
 
-Một số đặc điểm của JWT
+#### Hệ sinh thái
 
-- Một chuỗi JWT có 3 phần tách nhau bằng dấu chấm: `header.payload.signature`
-- **header** chứa thông tin thuật toán mã hóa. Nó được tạo ra bằng thuật toán và dễ dàng giải mã
-- **payload** chứa thông tin người dùng và thời gian hết hạn token. Nó cũng được tạo ra bằng thuật toán và dễ dàng giải mã.
-- **signature** là chữ ký, phần quan trọng nhất. Cái này không thể giải mã, vì nó là mã hóa 1 chiều. Chỉ có thể kiểm tra nó có đúng hay không bằng cách mã hóa **header**, **payload** kết hợp với một private key (private key thì thường server sẽ lưu trữ). Vậy nên nếu **header** hoặc **payload** thay đổi thì **signature** sẽ thay đổi.
+- Như mình đã nói thì HST React rất vượt trội, nếu bạn học React bạn cũng có thể viết được mobile với React native hay desktop app với Election
 
-Vậy nên nếu bạn là người code server thì đừng bao giờ lưu thông tin nhạy cảm ở payload JWT
+- Next.js là một framework react hỗ trợ server side rendering mạnh nhất hiện nay.
 
-JWT có thể dùng ở hầu hết các ngôn ngữ phổ biến hiện nay, ví dụ nodejs thì cài `jsonwebtoken`
+## 2. So sách SPA vs MPA
 
-### access token và refresh token
+MPA là Multiple Page Application, tức là những website truyền thống chuyển trang thì sẽ load lại toàn bộ trang web.
 
-- Access token là token dùng cho authentication. Token này có thời gian hết hạn khá ngắn (30p hoặc 1h)
-- Refresh token là token dùng cho việc tạo một access token khi access token hết hạn. Khi access token hết hạn, bạn gửi refresh token lên server để server kiểm tra và trả về cho bạn một access token mới, từ đó bạn có thể tiếp tục phiên làm việc của bạn. Refresh token có thời gian lưu trữ rất lâu, vài chục ngày hoặc vài năm.
+### Độ khó học
 
-### Một số điều thú vị quanh Token based authentication
+- SPA khó hơn so với MPA khi bạn phải học thêm một đống thứ xung quanh js framework
 
-Khi gửi access token lên server thì thường sẽ gửi thông qua HTTP Header Authorization như dưới đây
+### SEO
 
-```bash
-Authorization: Bearer <access token>
-```
+- MPA SEO tốt hơn so với SPA vì trả về source html ngay khi load trang web, còn SPA thì phải mất thời gian mới render ra html.
+- Những bot crawler hiện nay không đọc tốt những trang web mà SPA
 
-Tất nhiên bạn cũng có thể gửi thông qua HTTP Header khác tùy bạn, hoặc thậm chí là HTTP body nếu bạn đã thống nhất với phía server. Việc thông qua Header là Authorization đã có từ trước đây và được nhiều nơi sử dụng nên sau này nhiều anh em dev làm vậy cho dễ dàng nhận biết.
+=> Nhưng vẫn có cách cải thiện điểm yếu này là render html ngay tại server luôn rồi trả về tương tự MPA. Chúng ta có thể dùng Next.js thay vì React thuần.
 
-Cái chữ `Bearer` trước access token là để phân biệt giữa các Authentication schemes. Có một số Authentication schemes như: Basic, Bearer, Digest,... Tất nhiên là cũng có thể bạn bỏ đi cái `Bearer` này cũng được nếu server bạn không cần nó.
+### UX
 
-Đấy, tóm lại là phụ thuộc vào ông server setup như thế nào thôi. Nhưng setup như trên là kiểu setup theo đại đa số dev, mà cái gì nhiều người làm thì mình cũng nên làm theo chứ đừng đánh đố nhau làm gì.
+- SPA tăng trải nghiệm người dùng vì không phải tải lại toàn bộ trang web
+- MPA tải lại cả trang web mỗi khi chuyển trang đem lai trải nghiệm không thân thiện
+
+### Thân thiện dev
+
+- SPA giúp phân chia rõ ràng code giữa frontend và backend => phát triển dễ dàng
+- SPA có thể tải sử dụng các component dễ dàng
+- MPA thì không có sự phân chia rõ ràng giữa frontend và backend, backend đôi khi cũng phải xử lý những công việc của frontend
+
+### Tốc độ tải trang
+
+- Load lần đầu: MPA nhanh hơn so với SPA
+- Những lần chuyển trang tiếp theo: SPA nhanh hơn MPA
+- Server bên SPA sẽ được giảm tải hơn khi so với MPA
+- Server thiết kế cho SPA cũng có thể dùng được cho mobile => tiết kiệm thời gian
+
+## 3. Những cách setup một dự án React
+
+1. Chèn file javascript tương tự như cách chúng ta dùng jquery. Cách này dùng khi chúng ta đã có một website từ trước và muốn implement react vào 1 phần nhỏ trong website, cách này sẽ có nhiều hạn chế
+
+2. Dùng Create React App. Đây là tool tạo nhanh một project React do Facebook phát triển => Cách này đáp ứng được hầu hết nhu cầu của chúng ta khi phát triển dự án
+
+3. Tự build project React dựa trên Webpack hoặc Vite => Cách này giúp chúng ta tùy biến sâu nhất cho phù hợp dự án nhưng đòi hỏi cần có kiến thức về các build tool.
+
+Khóa học này mình sẽ hướng dẫn các bạn dùng CRA và Webpack để build React luôn.
