@@ -1,79 +1,108 @@
-# Tổng quan về React
+# Cài đặt môi trường code React
 
-## 1. React là gì? Tại sao lại chọn React?
+## 1. Môi trường hoàn hảo để code
 
-ReactJs là một framework Javascript dùng để xây dựng các Single Page Application (SPA)
+1. Nodejs để run server react dưới local
+2. VS code để code
+   - Cài thêm extention Icon Theme cho VS code (mình dùng Material Icon Theme)
+   - Prettier để format code
+   - ES Lint để quản lý tiêu chuẩn code
+3. Trình duyệt Chrome với extension là React Developer Tool và Redux Dev Tool extension
+4. Git: Tạo repo trên github để quản lý source code
 
-SPA là những trang web mà không bị reload khi chúng ta chuyển trang. Ví dụ: Facebook, Twitter, Instagram, Youtube, Gmail,...
+## 2. Khởi tạo Project với CRA
 
-Ngoài React thì còn có rất nhiều JS Framework có thể tạo được SPA như Angular, Vue, Svetle,...
+## 3. Giới thiệu về cầu trúc folder Project React.Js do CRA tạo
 
-### Tại sao lại chọn React?
+## 4. Sử dụng prettier và Eslint trong React.js (Tạo bằng Create React App)
 
-Chúng ta sẽ so sánh React với 2 framework lớn hiện tại là Angular và Vue
+### 4.1. Setting prettier on User
 
-#### Độ khó
+- Editor: Default Formatter => Chọn Prettier
+- Editor: Format On Save => true
+- Files: Eol => auto
 
-- React và Vue theo mình sẽ dễ tiếp cận hơn cho những bạn mới bắt đầu học về các framework SPA
-- Angular là framework khá khó nếu mới bắt đầu vì bạn phải học Typescript cùng những concept khá phức tạp như RXJS, Depedency Injection,...
+Nếu như các bạn muốn setting mỗi workspace hiện tại thôi (nghĩa là cái folder hiện tại) thì các bạn setting bên workspace
 
-#### Sự phổ biến
+### 4.2. Tạo file `.editorconfig` để chia sẻ một số setting giữa các editor với nhau
 
-- React là framework SPA phổ biến nhất hiện nay, số lượt tải hàng tháng gấp 3 lần Vue và Angular cộng lại.
-- Hệ sinh thái xung quanh React cũng rất lớn, được rất nhiều các công ty trên thế giới tin dùng.
-- Nhu cầu việc làm của React cũng lớn hơn rất nhiều so với Vue và Angular
+```bash
+[*]
+indent_style = space
+indent_size = 2
+```
 
-#### Tốc độ
+### 4.3. Tạo file `.prettierrc` để chia sẻ setting prettier giữa các editor
 
-Về tốc độ của React, Angular, Vue nhìn chung thì cũng tương đương nhau, chúng ta không cần quá quan tâm về điều này.
+```json
+{
+  "arrowParens": "always",
+  "semi": false,
+  "trailingComma": "none",
+  "tabWidth": 2,
+  "endOfLine": "auto",
+  "useTabs": false,
+  "singleQuote": true,
+  "printWidth": 120,
+  "jsxSingleQuote": true
+}
+```
 
-Kích thước file Build của React, Angular, Vue cũng phụ thuộc khá nhiều vào những thứ chúng ta implement vào như thư viện sử dụng nên cũng khó mà đánh giá.
+### 4.4. Cài các devDependencies hỗ trợ prettier và eslint trên terminal
 
-#### Hệ sinh thái
+Ở trên thì chúng ta mới chỉ setting prettier cho editor (tức là UI), bây giờ là cho terminal. Editor thì có thể mỗi máy sẽ kiểm tra khác nhau nhưng trên terminal thì không, setting trên terminal sẽ giúp code thống nhất.
 
-- Như mình đã nói thì HST React rất vượt trội, nếu bạn học React bạn cũng có thể viết được mobile với React native hay desktop app với Election
+```bash
+npm i prettier eslint-plugin-prettier eslint-config-prettier -D
+```
 
-- Next.js là một framework react hỗ trợ server side rendering mạnh nhất hiện nay.
+Trên là những plugin cần thiết để setting Pretter và Eslint cho CRA. Các bạn nếu dùng yarn thì chạy `yarn add` nhé.
 
-## 2. So sách SPA vs MPA
+### 4.5. Tạo file `.eslintrc` để setting eslint
 
-MPA là Multiple Page Application, tức là những website truyền thống chuyển trang thì sẽ load lại toàn bộ trang web.
+```json
+{
+  "extends": ["react-app", "prettier"],
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "always",
+        "semi": false,
+        "trailingComma": "none",
+        "tabWidth": 2,
+        "endOfLine": "auto",
+        "useTabs": false,
+        "singleQuote": true,
+        "printWidth": 120,
+        "jsxSingleQuote": true
+      }
+    ]
+  }
+}
+```
 
-### Độ khó học
+### 4.6. Thêm scripts vào package.json
 
-- SPA khó hơn so với MPA khi bạn phải học thêm một đống thứ xung quanh js framework
+```json
+{
+  "lint": "eslint --ext js,jsx,ts,tsx src/",
+  "lint:fix": "eslint --fix --ext js,jsx,ts,tsx src/",
+  "prettier": "prettier --check \"src/**/(*.jsx|*.js|*.tsx|*ts|*.css|*.scss)\"",
+  "prettier:fix": "prettier --write \"src/**/(*.jsx|*.js|*.tsx|*ts|*.css|*.scss)\""
+}
+```
 
-### SEO
+Lúc này bạn chỉ cần chạy
 
-- MPA SEO tốt hơn so với SPA vì trả về source html ngay khi load trang web, còn SPA thì phải mất thời gian mới render ra html.
-- Những bot crawler hiện nay không đọc tốt những trang web mà SPA
+- `npm run lint`: Kiểm tra lỗi eslint
+- `npm run lint:fix`: Fix lỗi liên quan eslint (đôi lúc có những lỗi bạn phải tự fix bằng tay)
+- `npm run prettier`: Kiểm tra lỗi prettier format
+- `npm run prettier:fix`: Tự fix lỗi prettier format
 
-=> Nhưng vẫn có cách cải thiện điểm yếu này là render html ngay tại server luôn rồi trả về tương tự MPA. Chúng ta có thể dùng Next.js thay vì React thuần.
+### 4.7. Thêm file `.prettierrignore` và `.eslintignore` để ignore những file bạn không muốn prettier và eslint format
 
-### UX
+Cú pháp viết trong những file này tương tự như trong file `.gitignore`, các bạn có thể tìm lại trong file `GitCanban.md` trong thư mục `GitCanBanDenNangCao` nhé.
 
-- SPA tăng trải nghiệm người dùng vì không phải tải lại toàn bộ trang web
-- MPA tải lại cả trang web mỗi khi chuyển trang đem lai trải nghiệm không thân thiện
-
-### Thân thiện dev
-
-- SPA giúp phân chia rõ ràng code giữa frontend và backend => phát triển dễ dàng
-- SPA có thể tải sử dụng các component dễ dàng
-- MPA thì không có sự phân chia rõ ràng giữa frontend và backend, backend đôi khi cũng phải xử lý những công việc của frontend
-
-### Tốc độ tải trang
-
-- Load lần đầu: MPA nhanh hơn so với SPA
-- Những lần chuyển trang tiếp theo: SPA nhanh hơn MPA
-- Server bên SPA sẽ được giảm tải hơn khi so với MPA
-- Server thiết kế cho SPA cũng có thể dùng được cho mobile => tiết kiệm thời gian
-
-## 3. Những cách setup một dự án React
-
-1. Chèn file javascript tương tự như cách chúng ta dùng jquery. Cách này dùng khi chúng ta đã có một website từ trước và muốn implement react vào 1 phần nhỏ trong website, cách này sẽ có nhiều hạn chế
-
-2. Dùng Create React App. Đây là tool tạo nhanh một project React do Facebook phát triển => Cách này đáp ứng được hầu hết nhu cầu của chúng ta khi phát triển dự án
-
-3. Tự build project React dựa trên Webpack hoặc Vite => Cách này giúp chúng ta tùy biến sâu nhất cho phù hợp dự án nhưng đòi hỏi cần có kiến thức về các build tool.
-
-Khóa học này mình sẽ hướng dẫn các bạn dùng CRA và Webpack để build React luôn.
+## 5. CICD và deploy với Vercel
