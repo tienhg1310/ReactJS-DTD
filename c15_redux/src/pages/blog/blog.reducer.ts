@@ -15,6 +15,8 @@ const initialState: BlogState = {
 export const addPost = createAction<Post>('blog/addPost')
 export const deletePost = createAction<string>('blog/deletePost')
 export const startEditingPost = createAction<string>('blog/startEditingPost')
+export const cancelEditingPost = createAction('blog/cancelEditingPost')
+export const finishEditingPost = createAction<Post>('blog/finishEditingPost')
 
 const blogReducer = createReducer(initialState, (builder) => {
   builder
@@ -33,6 +35,19 @@ const blogReducer = createReducer(initialState, (builder) => {
       const postId = action.payload
       const foundPost = state.postList.find((post) => post.id === postId) || null
       state.editingPost = foundPost
+    })
+    .addCase(cancelEditingPost, (state) => {
+      state.editingPost = null
+    })
+    .addCase(finishEditingPost, (state, action) => {
+      const postId = action.payload.id
+      state.postList.some((post, index) => {
+        if (post.id === postId) {
+          state.postList[index] = action.payload
+          return true
+        }
+        return false
+      })
     })
 })
 
