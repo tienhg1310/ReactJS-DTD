@@ -1,26 +1,38 @@
-import React, { useState } from 'react'
-import styles from './taskInput.module.scss'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { Todo } from '../../@types/todo.type'
+import styles from './taskInput.module.scss'
+import { TodoTypes } from '../../PropTypes/todo.proptype'
 
 interface TaskInputProps {
   addTodo: (name: string) => void
-  currentTodo: Todo | null
   editTodo: (name: string) => void
+  finishEditTodo: () => void
+  currentTodo: Todo | null
 }
 
-const TaskInput = (props: TaskInputProps) => {
-  const { addTodo, currentTodo } = props
+export default function TaskInput(props: TaskInputProps) {
+  const { addTodo, currentTodo, editTodo, finishEditTodo } = props
   const [name, setName] = useState<string>('')
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    addTodo(name)
-    setName('')
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (currentTodo) {
+      finishEditTodo()
+      if (name) setName('')
+    } else {
+      addTodo(name)
+      setName('')
+    }
   }
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setName(value)
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    if (currentTodo) {
+      editTodo(value)
+    } else {
+      setName(value)
+    }
   }
 
   return (
@@ -29,14 +41,19 @@ const TaskInput = (props: TaskInputProps) => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type='text'
+          placeholder='caption goes here'
           value={currentTodo ? currentTodo.name : name}
           onChange={onChangeInput}
-          placeholder='Caption goes here'
         />
-        <button type='submit'>➕</button>
+        <button type='submit'>{currentTodo ? '✔️' : '➕'}</button>
       </form>
     </div>
   )
 }
 
-export default TaskInput
+TaskInput.propTypes = {
+  addTodo: PropTypes.func.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  finishEditTodo: PropTypes.func.isRequired,
+  currentTodo: PropTypes.oneOfType([TodoTypes, PropTypes.oneOf([null])])
+}
