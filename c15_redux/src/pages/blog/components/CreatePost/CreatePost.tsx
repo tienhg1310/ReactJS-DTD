@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { Post } from '../../../../types/blog.type'
+import { useDispatch } from 'react-redux'
+import { Appdispatch } from '../../../../store'
+import { addPost } from '../../blog.reducer'
 
 const initialState: Post = {
   id: '',
@@ -12,10 +15,14 @@ const initialState: Post = {
 
 export default function CreatePost() {
   const [formData, setFormData] = useState<Post>(initialState)
+  const dispatch = useDispatch<Appdispatch>()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(formData)
+    const formDataWithId = { ...formData, id: new Date().toISOString() }
+
+    dispatch(addPost(formDataWithId))
+    setFormData(initialState)
   }
   return (
     <form onSubmit={handleSubmit}>
