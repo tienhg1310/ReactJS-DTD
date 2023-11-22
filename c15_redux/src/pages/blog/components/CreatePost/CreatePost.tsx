@@ -25,7 +25,7 @@ export default function CreatePost() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const formDataWithId = { ...formData, id: new Date().toISOString() }
+    const formDataWithId = { ...formData }
 
     if (editingPost) {
       dispatch(finishEditingPost(formData))

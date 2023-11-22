@@ -1,4 +1,4 @@
-import { createReducer, createAction } from '@reduxjs/toolkit'
+import { createAction, createReducer, current, nanoid } from '@reduxjs/toolkit'
 import { initialPostList } from '../../constants/blog'
 import { Post } from '../../types/blog.type'
 
@@ -12,7 +12,14 @@ const initialState: BlogState = {
   editingPost: null
 }
 
-export const addPost = createAction<Post>('blog/addPost')
+export const addPost = createAction('blog/addPost', (post: Omit<Post, 'id'>) => {
+  return {
+    payload: {
+      ...post,
+      id: nanoid()
+    }
+  }
+})
 export const deletePost = createAction<string>('blog/deletePost')
 export const startEditingPost = createAction<string>('blog/startEditingPost')
 export const cancelEditingPost = createAction('blog/cancelEditingPost')
@@ -48,7 +55,44 @@ const blogReducer = createReducer(initialState, (builder) => {
         }
         return false
       })
+      state.editingPost = null
     })
+    .addMatcher(
+      (action) => action.type.includes('cancel'),
+      (state, action) => console.log(current(state))
+    )
 })
 
+// const blogReducer = createReducer(initialState, {
+//   [addPost.type]: (state, action: PayloadAction<Post>) => {
+//     const post = action.payload
+//     state.postList.push(post)
+//   },
+//   [deletePost.type]: (state, action) => {
+//     const id = action.payload
+//     state.postList = state.postList.filter((post) => post.id !== id)
+//     // const postId = action.payload
+//     // const foundPostIndex = state.postList.findIndex((post) => post.id === postId)
+//     // if (foundPostIndex !== -1) state.postList.splice(foundPostIndex, 1)
+//   },
+//   [startEditingPost.type]: (state, action) => {
+//     const postId = action.payload
+//     const foundPost = state.postList.find((post) => post.id === postId) || null
+//     state.editingPost = foundPost
+//   },
+//   [cancelEditingPost.type]: (state) => {
+//     state.editingPost = null
+//   },
+//   [finishEditingPost.type]: (state, action) => {
+//     const postId = action.payload.id
+//     state.postList.some((post, index) => {
+//       if (post.id === postId) {
+//         state.postList[index] = action.payload
+//         return true
+//       }
+//       return false
+//     })
+//     state.editingPost = null
+//   }
+// })
 export default blogReducer
