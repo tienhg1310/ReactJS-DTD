@@ -1,5 +1,5 @@
 import { Appdispatch, RootState } from '../../../../store'
-import { deletePost, startEditingPost } from '../../blog.reducer'
+import { deletePost, startEditingPost } from '../../blog.slice'
 import PostItem from '../PostItem'
 import { useDispatch, useSelector } from 'react-redux'
 
