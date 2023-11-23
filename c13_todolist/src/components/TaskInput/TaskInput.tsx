@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Todo } from '../../@types/todo.type'
 import styles from './taskInput.module.scss'
 import { TodoTypes } from '../../PropTypes/todo.proptype'
+import Title from '../Title'
 
 interface TaskInputProps {
   addTodo: (name: string) => void
@@ -34,10 +35,17 @@ export default function TaskInput(props: TaskInputProps) {
       setName(value)
     }
   }
+  const address = useMemo(() => {
+    return { street: 'ha giang' }
+  }, [])
+
+  const handleClickTitle = useCallback((value: any) => {
+    console.log(value)
+  }, [])
 
   return (
     <div className='mb-2'>
-      <h1 className={styles.title}>To do list typescript</h1>
+      <Title address={address} handleClickTitle={handleClickTitle} />
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type='text'
