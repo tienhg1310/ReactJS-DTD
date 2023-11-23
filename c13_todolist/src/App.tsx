@@ -1,9 +1,11 @@
 import TodoList from './components/TodoList'
+import Watch from './components/Watch'
 
 function App() {
   return (
     <div>
-      <TodoList />
+      <Watch />
+      {/* <TodoList /> */}
     </div>
   )
 }
