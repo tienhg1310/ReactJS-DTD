@@ -1,4 +1,4 @@
-import { Post } from 'types/blog.type'
+import { Post } from '../types/blog.type'
 
 export const initialPostList: Post[] = [
   {
