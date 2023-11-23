@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../../../store'
 import { Post } from '../../../../types/blog.type'
-import { addPost, cancelEditingPost, finishEditingPost, updatePost } from '../../blog.slice'
+import { addPost, cancelEditingPost, updatePost } from '../../blog.slice'
 
 interface ErrorForm {
   publishDate: string
