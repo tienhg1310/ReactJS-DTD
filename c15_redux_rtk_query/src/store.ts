@@ -3,6 +3,7 @@ import blogReducer from './pages/blog/blog.slice'
 import { blogApi } from './pages/blog/blog.service'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { useDispatch } from 'react-redux'
+import { rtkQueryErrorLogger } from './middleware'
 // ...
 
 export const store = configureStore({
@@ -10,7 +11,7 @@ export const store = configureStore({
     blog: blogReducer,
     [blogApi.reducerPath]: blogApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(blogApi.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(blogApi.middleware, rtkQueryErrorLogger)
 })
 
 setupListeners(store.dispatch)

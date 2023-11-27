@@ -34,7 +34,6 @@ export const blogApi = createApi({
     }),
     updatePost: builder.mutation<Post, { id: string; body: Post }>({
       query: (data) => {
-        console.log({ data })
         return {
           url: `posts/${data.id}`,
           method: 'PUT',

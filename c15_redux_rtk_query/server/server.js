@@ -24,9 +24,14 @@ server.use((req, res, next) => {
       })
     }
   }
+  if (req.body.title === 'admin') {
+    return res.status(500).send({
+      error: 'Server bi loi'
+    })
+  }
   setTimeout(() => {
     next()
-  }, 2000)
+  }, 500)
 
   // Continue to JSON Server router
 })

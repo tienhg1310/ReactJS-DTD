@@ -39,6 +39,14 @@
       "publishDate": "2023-11-24T11:29",
       "published": true,
       "title": "Title"
+    },
+    {
+      "title": "admin",
+      "featuredImage": "Featured Image",
+      "description": "Featured Image",
+      "publishDate": "2023-11-29T14:44",
+      "published": true,
+      "id": 9
     }
   ]
 }

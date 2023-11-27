@@ -1,8 +1,11 @@
 import { Post } from '../../../../types/blog.type'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAddPostMutation, useGetPostQuery, useUpdatePostMutation } from '../../blog.service'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../../store'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { isEntityError, isFetchBaseQueryError } from '../../../../utils/helpers'
+import classNames from 'classnames'
 
 const initialState: Omit<Post, 'id'> = {
   title: '',
@@ -12,6 +15,12 @@ const initialState: Omit<Post, 'id'> = {
   published: false
 }
 
+type FormError =
+  | {
+      [key in keyof Omit<Post, 'id'>]: string
+    }
+  | null
+
 export default function CreatePost() {
   const [formData, setFormData] = useState<Omit<Post, 'id'> | Post>(initialState)
   const [addPost, addPostResult] = useAddPostMutation()
@@ -19,6 +28,14 @@ export default function CreatePost() {
 
   const { data } = useGetPostQuery(postId, { skip: !postId })
   const [updatePost, updatePostResult] = useUpdatePostMutation()
+
+  const errorForm: FormError = useMemo(() => {
+    const errorResult = postId ? updatePostResult.error : addPostResult.error
+    if (isEntityError(errorResult)) {
+      return errorResult.data.error as FormError
+    }
+    return null
+  }, [postId, addPostResult, updatePostResult])
 
   useEffect(() => {
     if (data) {
@@ -28,13 +45,16 @@ export default function CreatePost() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (postId) {
-      const postData = { ...formData, id: postId }
-      await updatePost({ body: postData, id: postId }).unwrap()
+    try {
+      if (postId) {
+        const postData = { ...formData, id: postId }
+        await updatePost({ body: postData, id: postId }).unwrap()
+      } else {
+        await addPost(formData).unwrap()
+      }
       setFormData(initialState)
-    } else {
-      await addPost(formData).unwrap()
-      setFormData(initialState)
+    } catch (error) {
+      console.log(error)
     }
   }
   return (
@@ -84,18 +104,35 @@ export default function CreatePost() {
         </div>
       </div>
       <div className='mb-6'>
-        <label htmlFor='publishDate' className='mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300'>
+        <label
+          htmlFor='publishDate'
+          className={classNames('mb-2 block text-sm font-medium  dark:text-gray-300', {
+            'text-red-700': errorForm?.publishDate,
+            'text-gray-900': !errorForm?.publishDate
+          })}
+        >
           Publish Date
         </label>
         <input
           type='datetime-local'
           id='publishDate'
-          className='block w-56 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500'
+          className={classNames('block w-56 rounded-lg border  p-2.5 text-sm  focus:outline-none ', {
+            'border-red-500 bg-red-50 text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-blue-500':
+              errorForm?.publishDate,
+            'border-gray-300 bg-gray-50 text-gray-900 focus:border-blue-500 focus:ring-blue-500':
+              !errorForm?.publishDate
+          })}
           placeholder='Title'
           required
           value={formData.publishDate}
           onChange={(e) => setFormData({ ...formData, publishDate: e.target.value })}
         />
+        {errorForm?.publishDate && (
+          <p className='mt-2 text-sm text-red-600'>
+            <span className='font-medium'>Lỗi: </span>
+            {errorForm?.publishDate}
+          </p>
+        )}
       </div>
       <div className='mb-6 flex items-center'>
         <input
