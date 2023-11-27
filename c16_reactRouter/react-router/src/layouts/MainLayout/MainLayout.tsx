@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { Link, NavLink, Route, Routes } from 'react-router-dom'
 interface Props {
   children?: React.ReactNode
 }
@@ -10,30 +9,43 @@ export default function MainLayout({ children }: Props) {
         <div className='h-full overflow-y-auto bg-gray-100 py-4 px-3 shadow-lg'>
           <ul className='space-y-2'>
             <li>
-              <a
-                href=''
-                className='flex items-center rounded-lg bg-gray-300 p-2 text-base font-normal text-gray-900 hover:bg-gray-300'
+              <NavLink
+                to='/'
+                end
+                className={({ isActive }) => {
+                  const activeClass = isActive ? 'bg-gray-300' : ''
+                  return `${activeClass} flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-300`
+                }}
               >
-                <span className='ml-3 font-bold'>Dashboard</span>
-              </a>
+                {({ isActive }) => <span className={`ml-3 ${isActive ? 'font-bold' : 's'}`}>Dashboard</span>}
+              </NavLink>
             </li>
             <li>
-              <a
-                href=''
-                className='flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-300'
+              <NavLink
+                to='/staff'
+                className={({ isActive }) => {
+                  const activeClass = isActive ? 'bg-gray-300' : ''
+                  return `${activeClass} flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-300`
+                }}
               >
-                <span className='ml-3'>Staff</span>
-              </a>
+                {({ isActive }) => <span className={`ml-3 ${isActive ? 'font-bold' : 's'}`}>Staff</span>}
+              </NavLink>
             </li>
             <li>
-              <a
-                href=''
-                className='flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-300'
+              <NavLink
+                to='/about'
+                className={({ isActive }) => {
+                  const activeClass = isActive ? 'bg-gray-300' : ''
+                  return `${activeClass} flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-300`
+                }}
               >
-                <span className='ml-3'>About</span>
-              </a>
+                {({ isActive }) => <span className={`ml-3 ${isActive ? 'font-bold' : 's'}`}>About </span>}
+              </NavLink>
             </li>
           </ul>
+          <Routes>
+            <Route path='/about' element={<>URL is about</>} />
+          </Routes>
         </div>
       </aside>
       <main className='col-span-3 h-full py-4 px-3'>{children}</main>
