@@ -18,7 +18,7 @@ export const blogApi = createApi({
         }
         const final = [{ type: 'Posts' as const, id: 'LIST' }]
         return final
-      } // Tên field trong redux state
+      }
     }),
     getPost: builder.query<Post, string>({
       query: (id) => `posts/${id}`
