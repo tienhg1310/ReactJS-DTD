@@ -6,7 +6,7 @@ import About from 'pages/About'
 import Dashboard from 'pages/Dashboard'
 import NotFound from 'pages/NotFound'
 import Staff from 'pages/Staff'
-import { Routes, Route, useRoutes, useLocation, useSearchParams } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 
 function App() {
   const elements = useRoutes([
