@@ -23,9 +23,7 @@ function App() {
     },
     { path: '*', element: <NotFound /> }
   ])
-  const location = useLocation()
-  const [searchParam] = useSearchParams()
-  console.log(Object.fromEntries(searchParam))
+
   return (
     <div className='App'>
       <MainLayout>
